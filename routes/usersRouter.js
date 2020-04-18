@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Users = require('../helpers/helperModel');
+const bcrypt = require('bcryptjs');
 
 //GET for /api/users
 router.get('/', (req, res) => {
@@ -15,7 +16,13 @@ router.get('/', (req, res) => {
 
 //POST to /api/register
 router.post('/api/register', (req, res) => {
-    Users.addUser()
+    const user = req.body;
+
+    const hash = bcrypt.hashSync(user.password, 12);
+
+    user.password = hash;
+
+    Users.addUser(user)
         .then(users => {
             res.status(200).json(users);
         })
