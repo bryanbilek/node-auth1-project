@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    console.log('middelware', req );
+    console.log('middelware', req.session);
     if (req.session.loggedIn) {
         next();
     } else {

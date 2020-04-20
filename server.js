@@ -1,9 +1,9 @@
 const express = require('express');
 const server = express();
 const helmet = require('helmet');
+const session = require('express-session');
 const usersRouter = require('./routes/usersRouter');
 const authRouter = require('./routes/authRouter');
-const session = require('express-session');
 const restricted = require('./routes/restricted-mw');
 
 const sessionConfig = {
@@ -20,9 +20,10 @@ const sessionConfig = {
 
 server.use(express.json());
 server.use(helmet());
+server.use(session(sessionConfig));
+
 server.use('/api/users', restricted, usersRouter);
 server.use('/api/auth', authRouter);
-server.use(session(sessionConfig));
 
 server.get('/', (req, res) => {
     res.send('<h2>Web Auth I Module Challenge</h2>');
