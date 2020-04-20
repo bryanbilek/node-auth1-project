@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 //POST to /api/auth/register
 router.post('/register', (req, res) => {
-    const user = req.body;
+    let user = req.body;
 
     const hash = bcrypt.hashSync(user.password, 8);
 
@@ -13,6 +13,7 @@ router.post('/register', (req, res) => {
 
     Users.add(user)
         .then(users => {
+            console.log('register-user', users);
             res.status(200).json({ message: 'Registration successful' });
         })
         .catch(err => {
@@ -22,12 +23,13 @@ router.post('/register', (req, res) => {
 
 //POST to /api/auth/login
 router.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    let { username, password } = req.body;
 
     Users.findBy({ username })
         .then(([user]) => {
+            console.log('login-user', user);
             if (user && bcrypt.compareSync(password, user.password)) {
-                req.session.user = user;
+                req.session.loggedIn = true;
                 res.status(200).json({ message: `Welcome ${user.username}!` });
             } else {
                 res.status(401).json({ message: 'Invalid username or password' })
