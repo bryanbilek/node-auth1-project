@@ -4,22 +4,23 @@ const helmet = require('helmet');
 const usersRouter = require('./routes/usersRouter');
 const authRouter = require('./routes/authRouter');
 const session = require('express-session');
+const restricted = require('./routes/restricted-mw');
 
 const sessionConfig = {
     name: 'bear',
     secret: 'keep it secret',
     cookie: {
-        maxAge: 1000 * 60 * 60 * 12,
+        maxAge: 1000 * 60 * 60 * 12,//12 hrs
         secure: false,
-        httpOnly: false
+        httpOnly: true
     },
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true
 }
 
 server.use(express.json());
 server.use(helmet());
-server.use('/api/users', usersRouter);
+server.use('/api/users', restricted, usersRouter);
 server.use('/api/auth', authRouter);
 server.use(session(sessionConfig));
 
