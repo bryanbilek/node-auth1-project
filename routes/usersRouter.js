@@ -4,7 +4,7 @@ const Users = require('../helpers/helperModel');
 
 //GET for /api/users
 router.get('/', (req, res) => {
-    Users.getUsers()
+    Users.find()
         .then(users => {
             res.status(200).json(users);
         })

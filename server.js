@@ -10,7 +10,7 @@ const sessionConfig = {
     name: 'bear',
     secret: 'keep it secret',
     cookie: {
-        maxAge: 1000 * 60 * 60 * 12,//12 hrs
+        maxAge: 1000 * 60 * 60,//1 hr long
         secure: false,
         httpOnly: true
     },

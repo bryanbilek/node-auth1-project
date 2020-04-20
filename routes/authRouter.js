@@ -11,7 +11,7 @@ router.post('/register', (req, res) => {
 
     user.password = hash;
 
-    Users.addUser(user)
+    Users.add(user)
         .then(users => {
             res.status(200).json({ message: 'Registration successful' });
         })
@@ -25,7 +25,7 @@ router.post('/login', (req, res) => {
     const { username, password } = req.body;
 
     Users.findBy({ username })
-        .then(user => {
+        .then(([user]) => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 req.session.user = user;
                 res.status(200).json({ message: `Welcome ${user.username}!` });
